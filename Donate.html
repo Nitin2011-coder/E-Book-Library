@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Book Library - Donate & Support</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header style="padding-top: 100px;">
+
+        <font style="font-size: 50px; text-align:center"  face="Segoe Print"> Donate </font>
+        <!-- Bottom Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-item active" data-page="home">
+            <img style="width: 50px;height: 50px;border-radius: 100%;background-color: #ccc;" src="Logo.jpg">
+        </div>
+        <div class="nav-item" data-page="home">
+        <span class="label"><a href="main.html" class="Search" style="font-size:23px;"> Home </a></span>
+        </div>
+        <div class="nav-item" data-page="charts">
+            <span class="label"><a href="Donate.html" class="Search" style="font-size:23px;"> Donate </a></span>
+        </div>
+        <div class="nav-item" data-page="party">
+            <span class="label"><a href="Help.html" class="Search" style="font-size:23px;"> Help </a></span>
+        </div>
+        <div class="faqitem" >
+            <button class="faqquestion" style="background-color: #00e1ff;">
+            <div class="navitem" data-page="profile">                
+                <img class="Profile-img" src="photo.jpg"  >
+            </div>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="faqanswer" style="width: 100px;">    
+            <br><a href="more.html" class="Search"><button id="signInBtnHeader" class="sign-in-btn" onclick="scrollToAuth()">🔐 New Sign In</button></a><br><br>
+             </div>
+        </div>
+    </nav>
+
+    
+    <main>
+        <section class="donation-section">
+            <div class="donation-header">
+                <h1>📚 Help Us Spread the Knowledge</h1>
+                <p style="font-size: 18px; color: #555; margin: 20px 0;">
+                    Knowledge is the greatest gift we can give to humanity. Every book in our library opens doors to new worlds, 
+                    dreams, and possibilities. Your support helps us keep these doors open for millions of readers worldwide.
+                </p>
+            </div>
+
+            <div class="story-box">
+                <h2>💝 Why Your Donation Matters</h2>
+                <ul style="font-size: 16px; line-height: 1.8; color: #333;">
+                    <li>✨ <strong>Democratize Education:</strong> Make premium books accessible to students everywhere, regardless of their background.</li>
+                    <li>🌍 <strong>Global Reach:</strong> Help readers in developing countries access quality literature and knowledge.</li>
+                    <li>📖 <strong>Preserve Literature:</strong> Support the digitization and preservation of rare and classic books.</li>
+                    <li>🚀 <strong>Empower Minds:</strong> Enable countless individuals to learn, grow, and transform their lives through reading.</li>
+                </ul>
+            </div>
+
+            <div class="donation-tiers">
+                <h2 style="text-align: center; margin: 30px 0;">Choose Your Impact</h2>
+                
+                <div class="tier-container">
+                    <div class="donation-tier">
+                        <h3>☕ Coffee Friend</h3>
+                        <p class="amount">$5</p>
+                        <p>Buy one student a book they've dreamed of reading</p>
+                        <button class="donate-btn" onclick="openDonationForm(5)">Donate $5</button>
+                    </div>
+
+                    <div class="donation-tier featured">
+                        <h3>📚 Book Lover</h3>
+                        <p class="amount">$25</p>
+                        <p>Sponsor 5 books for underprivileged libraries</p>
+                        <button class="donate-btn" onclick="openDonationForm(25)">Donate $25</button>
+                    </div>
+
+                    <div class="donation-tier">
+                        <h3>🎓 Scholar</h3>
+                        <p class="amount">$100</p>
+                        <p>Support one student's yearly reading journey</p>
+                        <button class="donate-btn" onclick="openDonationForm(100)">Donate $100</button>
+                    </div>
+
+                    <div class="donation-tier">
+                        <h3>🌟 Visionary</h3>
+                        <p class="amount">$500+</p>
+                        <p>Become a lifetime supporter & impact thousands</p>
+                        <button class="donate-btn" onclick="openDonationForm(500)">Donate More</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="testimonial">
+                <h2>💬 Stories That Inspire</h2>
+                <p style="font-size: 16px; font-style: italic; color: #555; margin: 20px 0;">
+                    <strong>"I was a poor student with big dreams. This library gave me access to books that changed my life. 
+                    Now I'm a software engineer, and I want to help others like me."</strong>
+                    <br><br>— Raj, India
+                </p>
+            </div>
+
+            <div class="donation-custom">
+                <h2>💖 Custom Donation</h2>
+                <p>Can't choose? Make your own impact:</p>
+                <input type="number" id="custom-amount" placeholder="Enter amount in $..." style="padding: 10px; width: 200px; font-size: 16px;">
+                <button class="donate-btn" style="margin-left: 10px;" onclick="donateCustom()">Donate Custom Amount</button>
+            </div>
+
+            <div class="thank-you">
+                <h2>🙏 Thank You!</h2>
+                <p style="font-size: 16px; color: #000000;">
+                    Every donation—no matter the size—fuels our mission. You're not just giving money; you're opening doors for dreamers, 
+                    students, and future leaders. Together, we make the world more literate and more compassionate.
+                </p>
+                <p style="margin-top: 20px; font-weight: bold; color: #2c3e50;">
+                    ✨ Your generosity changes lives. Thank you for being part of our mission! ✨
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const faqQuestions = document.querySelectorAll('.faqquestion');
+
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            // Toggle the 'active' class on the clicked question
+            question.classList.toggle('active');
+
+            // Select the next sibling element, which is the answer div
+            const answer = question.nextElementSibling;
+
+            // Toggle the display of the answer content
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                answer.style.padding = '0 18px'; // Reset padding when closed
+            } else {
+                // Set max-height to the actual scroll height to allow CSS transition
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                answer.style.padding = '0 18px 18px 18px'; // Apply padding when open
+            }
+        });
+    });
+});
+        // Donation form handler
+        function openDonationForm(amount) {
+            const confirmed = confirm(`You are about to donate $${amount}. 
+This will help us provide premium books to students in need.
+
+Click OK to proceed to payment, or Cancel to return.`);
+            
+            if (confirmed) {
+                showProcessingMessage(amount);
+            }
+        }
+
+        // Custom donation handler
+        function donateCustom() {
+            const customAmount = document.getElementById('custom-amount').value;
+            
+            if (!customAmount || customAmount <= 0) {
+                alert('❌ Please enter a valid amount to donate.');
+                return;
+            }
+            
+            const confirmed = confirm(`You are about to donate $${customAmount}. 
+This will help us provide premium books to students in need.
+
+Click OK to proceed to payment, or Cancel to return.`);
+            
+            if (confirmed) {
+                showProcessingMessage(customAmount);
+            }
+        }
+
+        // Show processing message
+        function showProcessingMessage(amount) {
+            alert(`✅ Thank you for your generous donation of $${amount}!
+
+Your support makes a real difference. Payment processing would redirect to Razorpay/PayPal integration (coming soon).
+
+For now, donations can be made via:
+📧 Email: nitinbokaro2011@gmail.com
+
+🏦 Bank Transfer Details:
+   Account Holder: Nitin Nayak
+   Bank Name: [It is Just a joak]
+   Account Number: [Don't wory]
+   IFSC Code: [Nothing will happen]
+   Branch: [Sorry]
+
+Thank you for being part of our mission! 🙏`);
+        }
+    </script>
+</body>
+</html>
+

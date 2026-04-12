@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Book Library - Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header style="position: relative;">
+        <h1 style="font-size: 50px; text-align:center; margin: 20px 0;">👤 Your Profile</h1>
+        <hr><hr>
+    </header>
+
+    <!-- Authentication Section (Login/Signup) -->
+    <div id="authSection" class="auth-container">
+        <div class="auth-tabs">
+            <button class="tab-btn active" onclick="switchTab('login')" style="padding-right: 50px;">🔐 Login </button>
+            <button class="tab-btn" onclick="switchTab('signup')" style="padding-right: 50px;">📝 Sign Up</button>
+            <button class="tab-btn" onclick="switchTab('admin')">👨‍💼 Admin Login</button>
+        </div>
+
+        <!-- Login Tab -->
+        <div id="loginTab" class="tab-content active">
+            <h2 style="text-align: center; margin-bottom: 20px;">Welcome Back!</h2>
+            <div class="form-group">
+                <label>Email Address:</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" onkeypress="if(event.key==='Enter') userLogin()">
+            </div>
+            <button class="btn btn-primary" onclick="userLogin()" style="width: 100%;">Login</button>
+        </div>
+
+        <!-- Signup Tab -->
+        <div id="signupTab" class="tab-content">
+            <h2 style="text-align: center; margin-bottom: 20px;">Create Other Your Account</h2>
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="signupName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Phone Number *</label>
+                <input type="tel" id="signupPhone" placeholder="Enter your phone">
+            </div>
+            <div class="form-group">
+                <label>Password *</label>
+                <input type="password" id="signupPassword" placeholder="Create a password (min 6 chars)">
+            </div>
+            <button class="btn btn-success" onclick="userSignup()" style="width: 100%;">Create Account</button>
+        </div>
+
+        <!-- Admin Login Tab -->
+        <div id="adminTab" class="tab-content">
+            <h2 style="text-align: center; margin-bottom: 20px;">🔐 Admin Access</h2>
+            <div class="form-group">
+                <label>Admin Password:</label>
+                <input type="password" id="adminLoginPassword" placeholder="Enter admin password" onkeypress="if(event.key==='Enter') adminLogin()">
+            </div>
+            <button class="btn btn-primary" onclick="adminLogin()" style="width: 100%; background: #ff6b6b;">Admin Login</button>
+        </div>
+    </div>
+
+    <!-- Profile Section (Visible after login) -->
+    <div id="profileSection" class="profile-container hidden">
+        <div class="user-info">
+            <p>👤 Logged in as: <strong id="currentUserEmail">-</strong></p>
+        </div>
+
+        <div class="profile-header">
+            <img id="profilePhoto" src="https://via.placeholder.com/150?text=No+Photo" alt="Profile Photo" class="profile-photo">
+            <h2 id="displayName">Loading...</h2>
+            <input type="file" id="photoUpload" class="photo-upload-input" accept="image/*" onchange="handlePhotoUpload()">
+            <button class="upload-btn" onclick="document.getElementById('photoUpload').click()">📷 Change Photo</button>
+        </div>
+
+        <!-- View Mode -->
+        <div id="viewMode" class="view-mode">
+            <p><strong>👤 Name:</strong> <span id="nameDisplay">-</span></p>
+            <p><strong>📧 Email:</strong> <span id="emailDisplay">-</span></p>
+            <p><strong>📱 Phone:</strong> <span id="phoneDisplay">-</span></p>
+        </div>
+
+        <!-- Edit Form (Hidden by default) -->
+        <form id="editForm" class="hidden">
+            <div class="form-group">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input type="email" id="email" placeholder="Enter your email" required disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number *</label>
+                <input type="tel" id="phone" placeholder="Enter your phone number" required>
+            </div>
+        </form>
+
+        <div class="btn-group">
+            <button id="editBtn" class="btn btn-primary" onclick="toggleEditMode()">✏️ Edit Profile</button>
+            <button id="saveBtn" class="btn btn-success hidden" onclick="saveProfile()">💾 Save Changes</button>
+            <button id="cancelBtn" class="btn btn-secondary hidden" onclick="toggleEditMode()">❌ Cancel</button>
+            <button class="btn btn-danger" onclick="userLogout()">🚪 Logout</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel Section -->
+    <div id="adminPanel" class="profile-container hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h2>📊 Admin Dashboard <span class="admin-badge">ADMIN</span></h2>
+            <button class="btn btn-danger" onclick="adminLogout()">🚪 Logout</button>
+        </div>
+
+        <h3>👥 All Registered Users</h3>
+        <div style="overflow-x: auto;">
+            <table class="users-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    <!-- Users will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- User Details Modal -->
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👤 Your Details</h2>
+                <button class="close-btn" onclick="closeUserModal()">×</button>
+            </div>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <img id="modalPhoto" src="" alt="User Photo" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover;">
+            </div>
+            <div class="view-mode">
+                <p><strong>👤 Name:</strong> <span id="modalName">-</span></p>
+                <p><strong>📧 Email:</strong> <span id="modalEmail">-</span></p>
+                <p><strong>📱 Phone:</strong> <span id="modalPhone">-</span></p>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="closeUserModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-item active" data-page="home">
+            <img style="width: 50px;height: 50px;border-radius: 100%;background-color: #ccc;" src="Logo.jpg">
+        </div>
+        <div class="nav-item" data-page="home">
+        <span class="label"><a href="main.html" class="Search" style="font-size:23px;"> Home </a></span>
+        </div>
+        <div class="nav-item" data-page="charts">
+            <span class="label"><a href="Donate.html" class="Search" style="font-size:23px;"> Donate </a></span>
+        </div>
+        <div class="nav-item" data-page="party">
+            <span class="label"><a href="Help.html" class="Search" style="font-size:23px;"> Help </a></span>
+        </div>
+        <div class="faqitem" >
+            <button class="faqquestion" style="background-color: #00e1ff;">
+            <div class="navitem" data-page="profile">                
+                <img class="Profile-img" src="photo.jpg"  >
+            </div>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="faqanswer" style="width: 100px;">    
+            <br><a href="more.html" class="Search"><button id="signInBtnHeader" class="sign-in-btn" onclick="scrollToAuth()">🔐 New Sign In</button></a><br><br>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="book-grid">
+            <!-- Book cards will be generated here -->
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const faqQuestions = document.querySelectorAll('.faqquestion');
+
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            // Toggle the 'active' class on the clicked question
+            question.classList.toggle('active');
+
+            // Select the next sibling element, which is the answer div
+            const answer = question.nextElementSibling;
+
+            // Toggle the display of the answer content
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                answer.style.padding = '0 18px'; // Reset padding when closed
+            } else {
+                // Set max-height to the actual scroll height to allow CSS transition
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                answer.style.padding = '0 18px 18px 18px'; // Apply padding when open
+            }
+        });
+    });
+});
+        // Admin credentials (CHANGE THIS!)
+        const ADMIN_PASSWORD = "2011";
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkLoginStatus();
+        });
+
+        // Switch between tabs
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            const buttons = document.querySelectorAll('.tab-btn');
+            const tab_map = { login: 0, signup: 1, admin: 2 };
+            if (buttons[tab_map[tab]]) {
+                buttons[tab_map[tab]].classList.add('active');
+            }
+            
+            document.getElementById(tab === 'login' ? 'loginTab' : tab === 'signup' ? 'signupTab' : 'adminTab').classList.add('active');
+        }
+
+        // Check login status
+        function checkLoginStatus() {
+            const currentUser = localStorage.getItem('currentUser');
+            const currentAdmin = localStorage.getItem('currentAdmin');
+            const signInBtn = document.getElementById('signInBtnHeader');
+            
+            if (currentAdmin === 'true') {
+                signInBtn.classList.add('hidden');
+                showAdminPanel();
+            } else if (currentUser) {
+                signInBtn.classList.add('hidden');
+                showProfile();
+            } else {
+                signInBtn.classList.remove('hidden');
+                showLogin();
+            }
+        }
+
+        // Scroll to auth section
+        function scrollToAuth() {
+            const authSection = document.getElementById('authSection');
+            authSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show login section
+        function showLogin() {
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('profileSection').classList.add('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+        }
+
+        // Show user profile
+        function showProfile() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('profileSection').classList.remove('hidden');
+            document.getElementById('adminPanel').classList.add('hidden');
+            loadProfile();
+        }
+
+        // Admin Login
+        function adminLogin() {
+            const password = document.getElementById('adminLoginPassword').value;
+
+            if (password === ADMIN_PASSWORD) {
+                localStorage.setItem('currentAdmin', 'true');
+                document.getElementById('adminLoginPassword').value = '';
+                alert('✅ Admin login successful!');
+                showAdminPanel();
+            } else {
+                alert('❌ Invalid admin password');
+            }
+        }
+
+        // Show admin panel
+        function showAdminPanel() {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('profileSection').classList.add('hidden');
+            document.getElementById('adminPanel').classList.remove('hidden');
+            loadAllUsers();
+        }
+
+        // Load all users for admin
+        function loadAllUsers() {
+            const users = JSON.parse(localStorage.getItem('allUsers')) || [];
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999;">No registered users yet</td></tr>';
+                return;
+            }
+
+            users.forEach((user, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.phone}</td>
+                    <td class="actions">
+                        <button class="btn-view" onclick="viewUserDetails(${index})">👁️ View</button>
+                        <button class="btn-delete" onclick="deleteUser(${index})">🗑️ Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // View user details in modal
+        function viewUserDetails(index) {
+            const users = JSON.parse(localStorage.getItem('allUsers')) || [];
+            const user = users[index];
+
+            if (user) {
+                document.getElementById('modalName').textContent = user.name;
+                document.getElementById('modalEmail').textContent = user.email;
+                document.getElementById('modalPhone').textContent = user.phone;
+                document.getElementById('modalPhoto').src = user.photo || 'https://via.placeholder.com/120?text=No+Photo';
+                document.getElementById('userModal').classList.add('show');
+            }
+        }
+
+        // Close user details modal
+        function closeUserModal() {
+            document.getElementById('userModal').classList.remove('show');
+        }
+
+        // Delete user
+        function deleteUser(index) {
+            if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                const users = JSON.parse(localStorage.getItem('allUsers')) || [];
+                const deletedUser = users[index];
+                users.splice(index, 1);
+                localStorage.setItem('allUsers', JSON.stringify(users));
+                alert(`✅ User "${deletedUser.name}" has been deleted`);
+                loadAllUsers();
+            }
+        }
+
+        // Admin Logout
+        function adminLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.setItem('currentAdmin', 'false');
+                document.getElementById('signInBtnHeader').classList.remove('hidden');
+                showLogin();
+                alert('✅ Admin logged out');
+            }
+        }
+
+        // ========== REGULAR USER FUNCTIONS ==========
+
+        // User Signup
+        function userSignup() {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
+            const password = document.getElementById('signupPassword').value;
+
+            if (!name || !email || !phone || !password) {
+                alert('❌ Please fill in all fields');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                alert('❌ Please enter a valid email');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('❌ Password must be at least 6 characters');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('allUsers')) || [];
+            if (users.find(u => u.email === email)) {
+                alert('❌ Email already registered. Please login or use a different email.');
+                return;
+            }
+
+            const newUser = {
+                email: email,
+                password: password,
+                name: name,
+                phone: phone,
+                photo: 'https://via.placeholder.com/150?text=No+Photo'
+            };
+
+            users.push(newUser);
+            localStorage.setItem('allUsers', JSON.stringify(users));
+            localStorage.setItem('currentUser', email);
+
+            alert('✅ Account created successfully! Welcome!');
+            
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPhone').value = '';
+            document.getElementById('signupPassword').value = '';
+
+            document.getElementById('signInBtnHeader').classList.add('hidden');
+            showProfile();
+        }
+
+        // User Login
+        function userLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                alert('❌ Please enter email and password');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('allUsers')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                localStorage.setItem('currentUser', email);
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                alert('✅ Login successful!');
+                document.getElementById('signInBtnHeader').classList.add('hidden');
+                showProfile();
+            } else {
+                alert('❌ Invalid email or password');
+            }
+        }
+
+        // Load user profile
+        function loadProfile() {
+            const currentUserEmail = localStorage.getItem('currentUser');
+            const users = JSON.parse(localStorage.getItem('allUsers')) || [];
+            const user = users.find(u => u.email === currentUserEmail);
+
+            if (user) {
+                document.getElementById('currentUserEmail').textContent = user.email;
+                document.getElementById('fullName').value = user.name;
+                document.getElementById('email').value = user.email;
+                document.getElementById('phone').value = user.phone;
+                document.getElementById('nameDisplay').textContent = user.name;
+                document.getElementById('emailDisplay').textContent = user.email;
+                document.getElementById('phoneDisplay').textContent = user.phone;
+                document.getElementById('displayName').textContent = user.name;
+                document.getElementById('profilePhoto').src = user.photo;
+            }
+        }
+
+        // Toggle edit mode
+        function toggleEditMode() {
+            const editForm = document.getElementById('editForm');
+            const viewMode = document.getElementById('viewMode');
+            const editBtn = document.getElementById('editBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            editForm.classList.toggle('hidden');
+            viewMode.classList.toggle('hidden');
+            editBtn.classList.toggle('hidden');
+            saveBtn.classList.toggle('hidden');
+            cancelBtn.classList.toggle('hidden');
+        }
+
+        // Handle photo upload
+        function handlePhotoUpload() {
+            const fileInput = document.getElementById('photoUpload');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const photoDataUrl = e.target.result;
+                    document.getElementById('profilePhoto').src = photoDataUrl;
+                    
+                    const currentUserEmail = localStorage.getItem('currentUser');
+                    const users = JSON.parse(localStorage.getItem('allUsers')) || [];
+                    const user = users.find(u => u.email === currentUserEmail);
+                    if (user) {
+                        user.photo = photoDataUrl;
+                        localStorage.setItem('allUsers', JSON.stringify(users));
+                    }
+                    
+                    alert('✅ Photo updated successfully!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Save profile changes
+        function saveProfile() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+
+            if (!fullName || !phone) {
+                alert('❌ Please fill in all fields');
+                return;
+            }
+
+            const currentUserEmail = localStorage.getItem('currentUser');
+            const users = JSON.parse(localStorage.getItem('allUsers')) || [];
+            const user = users.find(u => u.email === currentUserEmail);
+
+            if (user) {
+                user.name = fullName;
+                user.phone = phone;
+                localStorage.setItem('allUsers', JSON.stringify(users));
+
+                document.getElementById('nameDisplay').textContent = fullName;
+                document.getElementById('phoneDisplay').textContent = phone;
+                document.getElementById('displayName').textContent = fullName;
+
+                alert('✅ Profile saved successfully!');
+                toggleEditMode();
+            }
+        }
+
+        // Validate email
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // User Logout
+        function userLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.setItem('currentUser', '');
+                document.getElementById('signInBtnHeader').classList.remove('hidden');
+                showLogin();
+                alert('✅ You have been logged out');
+            }
+        }
+    </script>
+</body>
+</html>
+
+userSignup

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Book Library </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <button id="signInBtnHeader" class="sign-in-btn" onclick="scrollToAuth()">🔐 New Sign In</button>
+    <!-- Authentication Section (Login/Signup) -->
+    <div id="authSection" class="auth-container">
+        <div class="auth-tabs">
+            <button class="tab-btn" onclick="switchTab('signup')" style="padding-left: 200px;">📝 Sign Up</button>
+        </div>
+        <!-- Signup Tab -->
+        <div id="signupTab" class="tab-content">
+            <h2 style="text-align: center; margin-bottom: 20px;">Create Other Your Account</h2>
+            <div class="form-group">
+                <label>Full Name *</label>
+                <input type="text" id="signupName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>Email Address *</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label>Phone Number *</label>
+                <input type="tel" id="signupPhone" placeholder="Enter your phone">
+            </div>
+            <div class="form-group">
+                <label>Password *</label>
+                <input type="password" id="signupPassword" placeholder="Create a password (min 6 chars)">
+            </div>
+            <button class="btn btn-success" onclick="userSignup()" style="width: 100%;">Create Account</button>
+        </div>
+
+
+<style>
+    
+    body {
+        background: linear-gradient(135deg, #9900ff 0%, #006eff 100%);
+    }  
+    .sign-in-btn {
+        cursor: pointer;
+        float: right;
+    }
+    .sign-in-btn:hover {
+    background: #ff9900;
+    }
+        
+</style>
+<script>
+            // Validate email
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+    // User Signup
+        function userSignup() {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const phone = document.getElementById('signupPhone').value.trim();
+            const password = document.getElementById('signupPassword').value;
+
+            if (!name || !email || !phone || !password) {
+                alert('❌ Please fill in all fields');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                alert('❌ Please enter a valid email');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('❌ Password must be at least 6 characters');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('allUsers')) || [];
+            if (users.find(u => u.email === email)) {
+                alert('❌ Email already registered. Please login or use a different email.');
+                return;
+            }
+
+            const newUser = {
+                email: email,
+                password: password,
+                name: name,
+                phone: phone,
+                photo: 'https://via.placeholder.com/150?text=No+Photo'
+            };
+
+            users.push(newUser);
+            localStorage.setItem('allUsers', JSON.stringify(users));
+            localStorage.setItem('currentUser', email);
+
+            alert('✅ Account created successfully! Welcome!');
+            
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPhone').value = '';
+            document.getElementById('signupPassword').value = '';
+
+            document.getElementById('signInBtnHeader').classList.add('hidden');
+            showProfile();
+        }
+
+</script>
+<script src="script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Book Library</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background: url('Background-img.jpg') center/cover no-repeat fixed; margin: 0;">
+    <header style="position: relative;">
+      <div class="Liberary-container">
+        <h1 style="font-size: 50px; text-align:center; margin: 0;"> 📖E-Book Library📖 </h1>
+      </div> 
+    <hr><hr><br>
+    <div class="container">
+        <form>
+            <i class="fas fa-search search-icon">🔍</i>
+            <input type="text" id="search-input" placeholder="Search for a book..." onkeyup="searchBooks()">
+            </form>
+    </div>
+    <br><hr><hr><br>
+    </header> 
+        <ol class="book-list" id="book-list">
+    <li class="book-item">
+    <h2><u> Constitution Of India </u></h2><br>
+    <a href="ConstitutionOfIndia.pdf" target="_blank" class="Google-button"><img src="constitution.jpg"></a>
+    <p> ---  </p></li>
+    <li class="book-item">
+    <h2><u> The God Of Small Things </u></h2><br>
+    <a href="https://archive.org/read/the_god_of_small_things" target="_blank" class="Google-button"><img src="TheGodOfSmallThings.jpg"></a>
+    <p> --- by Arundhiti Roy </p></li>
+    <li class="book-item">
+    <h2><u> The White Tiger </u></h2><br>
+    <a href="https://archive.org/read/the_white_tiger_aravind_adiga" target="_blank" class="Google-button"><img src="TheWhiteTiger.jpg"></a>
+    <p> --- by Arvind Adiga </p></li>
+    <li class="book-item">
+    <h2><u> Midnights Children </u></h2><br>
+    <a href="https://archive.org/read/midnights_children_salman_rushdie" target="_blank" class="Google-button"><img src="MidnightsChildren.jpg"></a>
+    <p> --- by Salman Rushdil </p></li>
+    <li class="book-item">
+    <h2><u> The Jungle Book </u></h2><br>
+    <a href="TheJungleBook.pdf" target="_blank" class="Google-button"><img src="Jungle-Book.jpg"></a>
+    <p> --- by Rudyard Kiplin </p></li>
+    <li class="book-item">
+    <h2><u> A Tale of Two Cities </u></h2><br>
+    <a href="https://www.gutenberg.org/ebooks/98" target="_blank" class="Google-button"><img src="ATaleofTwoCities.jpg"></a>
+    <p> --- Charles Dickens </p></li>
+    <li class="book-item">
+    <h2><u> Pride and Prejudice </u></h2><br>
+    <a href="https://www.gutenberg.org/files/1342/1342-h/1342-h.htm" target="_blank" class="Google-button"><img src="PrideandPrejudice.jpg"></a>
+    <p> --- Jane Austen </p></li>
+    <li class="book-item">
+    <h2><u> The Alchemist </u></h2><br>
+    <a href="https://archive.org/read/the_alchemist_paulo_coelho" target="_blank" class="Google-button"><img src="TheAlchemist.jpg"></a>
+    <p> --- Paulo Coelho </p></li>
+    <li class="book-item">
+    <h2><u> The Little Prince </u></h2><br>
+    <a href="https://www.gutenberg.org/files/4015/4015-h/4015-h.htm" target="_blank" class="Google-button"><img src="TheLittlePrince.jpg"></a>
+    <p> --- Antoine de Saint-Exupéry </p></li> 
+    <li class="book-item">
+    <h2><u> Malgudi Days </u></h2><br>
+    <a href="https://archive.org/read/malgudi_days_r_k_narayan" target="_blank" class="Google-button"><img src="MalgudiDays.jpg"></a>
+    <p> --- R.K. Narayan </p></li>
+    <li class="book-item">
+    <h2><u> Three Men In A Boat  </u></h2><br>
+    <a href="https://www.gutenberg.org/files/308/308-h/308-h.htm" target="_blank" class="Google-button"><img src="ThreeMenInABoat.jpg"></a>
+    <p> --- Jerome K. Jerome </p></li>
+    <li class="book-item">
+    <h2><u> Devdas </u></h2><br>
+    <a href="https://standardebooks.org/ebooks/sarat-chandra-chattopadhyay/devdas" target="_blank" class="Google-button"><img src="devdas.jpg"></a>
+    <p> --- Sarat Chandra Chattopadhyay </p></li>
+    <li class="book-item">
+    <h2><u> The Guide </u></h2><br>
+    <a href="https://books.google.co.in/books/about/The_Guide.html" target="_blank" class="Google-button"><img src="theguide.jpg"></a>
+    <p> --- R.K. Narayan </p></li>
+    <li class="book-item">
+    <h2><u> A Suitable Boy </u></h2><br>
+    <a href="https://books.google.co.in/books/about/A_Suitable_Boy.html" target="_blank" class="Google-button"><img src="suitableboy.jpg"></a>
+    <p> --- Vikram Seth </p></li>
+    <li class="book-item">
+    <h2><u> Such a Long Journey </u></h2><br>
+    <a href="https://books.google.co.in/books/about/Such_a_Long_Journey.html" target="_blank" class="Google-button"><img src="longjourney.jpg"></a>
+    <p> --- Rohinton Mistry </p></li>
+    <li class="book-item">
+    <h2><u> The Inheritance of Loss </u></h2><br>
+    <a href="https://books.google.co.in/books/about/The_Inheritance_of_Loss.html" target="_blank" class="Google-button"><img src="inheritanceloss.jpg"></a>
+    <p> --- Kiran Desai </p></li>
+    <li class="book-item">
+    <h2><u> The Glass Palace </u></h2><br>
+    <a href="https://books.google.co.in/books/about/The_Glass_Palace.html" target="_blank" class="Google-button"><img src="glasspalace.jpg"></a>
+    <p> --- Amitav Ghosh </p></li>
+    <li class="book-item">
+    <h2><u> Five Point Someone </u></h2><br>
+    <a href="https://books.google.co.in/books/about/Five_Point_Someone.html" target="_blank" class="Google-button"><img src="fivepoint.jpg"></a>
+    <p> --- Chetan Bhagat </p></li>
+    <li class="book-item">
+    <h2><u> Interpreter of Maladies </u></h2><br>
+    <a href="https://books.google.co.in/books/about/Interpreter_of_Maladies.html" target="_blank" class="Google-button"><img src="interpreter.jpg"></a>
+    <p> --- Jhumpa Lahiri </p></li>
+    <li class="book-item">
+    <h2><u> Untamed </u></h2><br>
+    <a href="https://books.google.co.in/books/about/Untamed.html" target="_blank" class="Google-button"><img src="untamed.jpg"></a>
+    <p> --- Khushwant Singh </p></li>
+
+    <li class="book-item">
+    <h2><u> Chandrakanta </u></h2><br>
+    <a href="https://www.gutenberg.org/ebooks/search/?query=chandrakanta" target="_blank" class="Google-button"><img src="chandrakanta.jpg"></a>
+    <p> --- Devaki Nandan Khatri </p></li>
+    <li class="book-item">
+    <h2><u> Raag Darbari </u></h2><br>
+    <a href="https://books.google.co.in/books/about/Raag_Darbari.html" target="_blank" class="Google-button"><img src="raagdarbari.jpg"></a>
+    <p> --- Raendra Mathur </p></li>
+    <li class="book-item">
+    <h2><u> The Sorrow of War </u></h2><br>
+    <a href="https://books.google.co.in/books/about/The_Sorrow_of_War.html" target="_blank" class="Google-button"><img src="sorrowwar.jpg"></a>
+    <p> --- Bao Ninh </p></li>
+        </ol>
+<script src="script.js"></script>
+
+    
+        <!-- Bottom Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-item active" data-page="home">
+            <img style="width: 50px;height: 50px;border-radius: 100%;background-color: #ccc;" src="Logo.jpg">
+        </div>
+        <div class="nav-item" data-page="home">
+        <span class="label"><a href="main.html" class="Search" style="font-size:23px;"> Home </a></span>
+        </div>
+        <div class="nav-item" data-page="charts">
+            <span class="label"><a href="Donate.html" class="Search" style="font-size:23px;"> Donate </a></span>
+        </div>
+        <div class="nav-item" data-page="party">
+            <span class="label"><a href="Help.html" class="Search" style="font-size:23px;"> Help </a></span>
+        </div>
+        <div class="faqitem" >
+            <button class="faqquestion" style="background-color: #00e1ff;">
+            <div class="navitem" data-page="profile">                
+                <img class="Profile-img" src="	">
+            </div>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="faqanswer" style="width: 100px;">    
+            <br><a href="more.html" class="Search"><button id="signInBtnHeader" class="sign-in-btn" onclick="scrollToAuth()">🔐 New Sign In</button></a><br><br>
+            <button class="sign-in-btn" onclick="triggerFunnySignIn()">✨ For New User</button><br>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Funny Sign-In Modal -->
+    <div class="signin-celebration-modal" id="signinModal">
+        <div class="signin-celebration-content">
+            <div class="celebration-emoji" id="celebrationEmoji">🎉</div>
+            <div class="celebration-message">Welcome Back! 🚀</div>
+            <div class="celebration-text" id="celebrationText">Get ready for an amazing reading journey!</div>
+            <div class="loading-dot"></div>
+            <p style="margin-top: 20px; font-size: 14px; color: #999;">Redirecting in <span id="celebrationCountdown">3</span>s...</p>
+        </div>
+    </div>
+<div class="video-container" id="myVideoWrapper">
+  <!-- The Close Button -->
+  <button class="close-btn" onclick="removeVideo()">×</button>
+ 
+  <!-- The Video Tag -->
+  <video height="100%"  width="100%" controls>
+    <source src="your-video-file.mp4" type="video/mp4">
+  </video>
+</div>
+
+    <style>
+        /* The container that holds everything */
+        .video-container { 
+            float: right;
+            position: relative;
+            width: 500px; /* Adjust as needed */
+            height: 250px; 
+        }
+
+        /* Styling for the X button */
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            background: red;
+        }
+        .book-card {
+            width: 30%;
+            display: inline-block;
+        }
+        @media screen and (max-width:600px) {
+            .book-card {
+                width: 100%;
+            }
+        }
+        /* Celebration Animation Styles */
+        .signin-celebration-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .signin-celebration-content {
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            animation: popIn 0.5s ease-out;
+            max-width: 450px;
+        }
+
+        @keyframes popIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .celebration-emoji {
+            font-size: 100px;
+            animation: spinEmoji 0.8s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes spinEmoji {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(10deg) scale(1.1); }
+        }
+
+        .celebration-message {
+            font-size: 32px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .celebration-text {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .loading-dot {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spinDot 1s linear infinite;
+            margin: 20px 0;
+        }
+
+        @keyframes spinDot {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes confettiFloat {
+            0% {
+                opacity: 1;
+                transform: translateY(0) translateX(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) translateX(var(--tx, 0px));
+            }
+        }
+
+        .signin-confetti {
+            position: fixed;
+            pointer-events: none;
+            font-size: 20px;
+            animation: confettiFloat 3s ease-out forwards;
+        }
+    </style>
+
+    <script>
+          function removeVideo() {
+            // This hides the entire container from the screen
+            document.getElementById('myVideoWrapper').style.display = 'none';
+        }
+        const celebrationEmojis = ['🎉', '🎊', '🚀', '📚', '⭐', '✨', '💫', '🏆', '😄', '🌟'];
+        const celebrationMessages = [
+            '📚 Welcome to Book Paradise!',
+            '🚀 You\'re logged in!',
+            '🎓 Time to explore!',
+            '✨ Let\'s read together!',
+            '🌟 Adventure awaits!'
+        ];
+
+        function triggerFunnySignIn() {
+            const modal = document.getElementById('signinModal');
+            const emoji = document.getElementById('celebrationEmoji');
+            const text = document.getElementById('celebrationText');
+
+            // Show modal
+            modal.style.display = 'flex';
+
+            // Create confetti
+            createConfetti();
+
+            // Rotate emojis
+            let emojiIndex = 0;
+            const emojiInterval = setInterval(() => {
+                emoji.textContent = celebrationEmojis[emojiIndex % celebrationEmojis.length];
+                emojiIndex++;
+            }, 200);
+
+            // Change message
+            let messageIndex = 0;
+            const messageInterval = setInterval(() => {
+                text.textContent = celebrationMessages[messageIndex % celebrationMessages.length];
+                messageIndex++;
+            }, 1200);
+
+            // Countdown and redirect
+            let countdown = 3;
+            const countdownInterval = setInterval(() => {
+                document.getElementById('celebrationCountdown').textContent = countdown;
+                countdown--;
+
+                if (countdown < 0) {
+                    clearInterval(countdownInterval);
+                    clearInterval(emojiInterval);
+                    clearInterval(messageInterval);
+                    // Redirect to Loginpage
+                    window.location.href = 'Loginpage.html';
+                }
+            }, 1000);
+        }
+
+        function createConfetti() {
+            const emojis = ['🎉', '🎊', '📚', '🚀', '⭐', '✨', '💫', '🏆'];
+            for (let i = 0; i < 40; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'signin-confetti';
+                confetti.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = window.innerHeight + 'px';
+                confetti.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+    const faqQuestions = document.querySelectorAll('.faqquestion');
+
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            // Toggle the 'active' class on the clicked question
+            question.classList.toggle('active');
+
+            // Select the next sibling element, which is the answer div
+            const answer = question.nextElementSibling;
+
+            // Toggle the display of the answer content
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null;
+                answer.style.padding = '0 18px'; // Reset padding when closed
+            } else {
+                // Set max-height to the actual scroll height to allow CSS transition
+                answer.style.maxHeight = answer.scrollHeight + "px";
+                answer.style.padding = '0 18px 18px 18px'; // Apply padding when open
+            }
+        });
+    });
+});
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
+
