@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - E-Book Library</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Logo.jpg" type="image/jpg">
+</head>
+<body style="background: url('Background-img.jpg') center/cover no-repeat fixed; margin: 0;">
+    <script>
+        // Check if user is logged in, else redirect to index.html
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <div class="points-header">
+        ⭐ Points: <span class="points-value" id="pointsDisplay">0</span>
+    </div>
+
+    <header style="position: relative;">
+        <div class="Liberary-container">
+            <h1 style="font-size: 50px; text-align:center; margin: 0;">🏆 Leaderboard 🏆</h1>
+        </div>
+        <hr><hr><br>
+    </header>
+
+    <div class="leaderboard-container">
+        <div class="leaderboard-header">
+            <h2>Top Readers & Points Earners</h2>
+            <p>Join the community and climb the rankings!</p>
+            <p style="font-size: 14px; margin-top: 15px;">Your Rank: <strong id="userRank">-</strong> | Your Points: <strong id="userPoints">0</strong></p>
+        </div>
+
+        <div class="leaderboard-table">
+            <table id="leaderboardTable">
+                <thead>
+                    <tr>
+                        <th style="width: 100px;">Rank</th>
+                        <th>User</th>
+                        <th>Favorites</th>
+                        <th style="width: 150px;">Points</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Leaderboard rows will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="main.html" style="color: #667eea; font-weight: bold; font-size: 16px;">← Back to Library</a>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-item" data-page="home">
+            <img href="https://nitin2011-coder.github.io/E-Book-Library/" style="width: 50px;height: 50px;border-radius: 100%;background-color: #ccc;" src="Logo.jpg">
+        </div>
+        <div class="nav-item" data-page="home">
+            <span class="label"><a href="main.html" class="Search" style="font-size:23px;"> Home </a></span>
+        </div>
+        <div class="nav-item nav-favorites" data-page="favorites">
+            <span class="label"><a href="Favorites.html" class="Search" style="font-size:23px;"> Favorites </a></span>
+        </div>
+        <div class="nav-item" data-page="charts">
+            <span class="label"><a href="Donate.html" class="Search" style="font-size:23px;"> Donate </a></span>
+        </div>
+        <div class="nav-item" data-page="party">
+            <span class="label"><a href="Help.html" class="Search" style="font-size:23px;"> Help </a></span>
+        </div>
+        <div class="faqitem">
+            <button class="faqquestion" style="background-color: #882dacb7;">
+                <div class="navitem" data-page="profile">
+                    <img class="Profile-img" src="">
+                </div>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="faqanswer" style="width: 100px;">
+                <br><a href="more.html" class="Search"><button id="signInBtnHeader" class="sign-in-btn" onclick="scrollToAuth()">🔐 Profile</button></a><br><br>
+                <button class="sign-in-btn" onclick="triggerFunnySignIn()">✨ Options</button><br>
+            </div>
+        </div>
+    </nav>
+
+    <script src="script.js"></script>
+    <script>
+        // Sample users for demo (in a real app, this would come from a database)
+        const demoUsers = [
+            { id: 'user1', name: 'Nitin Nayak', favorites: 15, points: 850 },
+            { id: 'user2', name: 'Raj Kumar', favorites: 12, points: 720 },
+            { id: 'user3', name: 'Priya Singh', favorites: 18, points: 895 },
+            { id: 'user4', name: 'Amit Patel', favorites: 10, points: 650 },
+            { id: 'user5', name: 'Sophia Das', favorites: 14, points: 780 }
+        ];
+
+        function loadLeaderboard() {
+            const currentUser = localStorage.getItem('currentUser');
+            const tableBody = document.getElementById('tableBody');
+            const currentUserEmail = currentUser || 'Unknown';
+
+            // Get all users from localStorage (demo: using sample data)
+            let allUsers = [...demoUsers];
+            
+            // Try to get additional users from localStorage
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('points_')) {
+                    const userId = key.replace('points_', '');
+                    const points = parseInt(localStorage.getItem(key));
+                    const favorites = getFavorites(userId)?.length || 0;
+                    
+                    // Check if user already exists in allUsers
+                    const exists = allUsers.some(u => u.id === userId);
+                    if (!exists) {
+                        allUsers.push({
+                            id: userId,
+                            name: userId.split('@')[0] || 'User',
+                            favorites: favorites,
+                            points: points
+                        });
+                    }
+                }
+            }
+
+            // Sort by points descending
+            allUsers.sort((a, b) => b.points - a.points);
+
+            // Update current user stats
+            const currentUserIndex = allUsers.findIndex(u => u.id === currentUserEmail);
+            if (currentUserIndex !== -1) {
+                document.getElementById('userRank').textContent = currentUserIndex + 1;
+                document.getElementById('userPoints').textContent = allUsers[currentUserIndex].points;
+            }
+
+            // Generate table HTML
+            let html = '';
+            const medals = ['🥇', '🥈', '🥉'];
+
+            allUsers.forEach((user, index) => {
+                const isCurrentUser = user.id === currentUserEmail;
+                const medal = index < 3 ? medals[index] : `<span style="color: #667eea; font-weight: bold;">#${index + 1}</span>`;
+                
+                html += `
+                    <tr ${isCurrentUser ? 'style="background-color: #f0f4ff; border-left: 4px solid #667eea;"' : ''}>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="medal">${medal}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="user-name">${user.name}</span>
+                            ${isCurrentUser ? '<span style="color: #667eea; margin-left: 8px;">(You)</span>' : ''}
+                        </td>
+                        <td>${user.favorites || 0} books</td>
+                        <td><strong>${user.points}</strong> ⭐</td>
+                    </tr>
+                `;
+            });
+
+            tableBody.innerHTML = html;
+            document.getElementById('pointsDisplay').textContent = getPoints(currentUser);
+        }
+
+        // Load leaderboard on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLeaderboard();
+        });
+    </script>
+</body>
+</html>

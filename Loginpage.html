@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - E-Book Library</title>
+    <link rel="icon" href="Logo.jpg" type="image/jpg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            background: radial-gradient(circle at top left, rgba(255,255,255,0.3), transparent 35%),
+                        radial-gradient(circle at bottom right, rgba(0,0,0,0.15), transparent 25%),
+                        linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            color: #1a1a1a;
+        }
+
+        .background-glow {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(circle at 25% 30%, rgba(255,255,255,0.18), transparent 20%),
+                        radial-gradient(circle at 75% 70%, rgba(255,255,255,0.12), transparent 18%);
+            opacity: 0.9;
+        }
+
+        .welcome-container {
+            position: relative;
+            width: min(520px, 100%);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255,255,255,0.7);
+            backdrop-filter: blur(18px);
+            padding: 48px 36px;
+            border-radius: 28px;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.18);
+            text-align: center;
+            overflow: hidden;
+            animation: floatIn 0.8s ease-out both;
+        }
+
+        .welcome-container::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            background: rgba(102, 126, 234, 0.14);
+            border-radius: 50%;
+            top: -60px;
+            right: -60px;
+            filter: blur(30px);
+        }
+
+        .welcome-container::after {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: rgba(118, 75, 162, 0.14);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+            filter: blur(30px);
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(36px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .welcome-emoji {
+            font-size: 84px;
+            margin-bottom: 24px;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-14px); }
+        }
+
+        h1 {
+            font-size: clamp(2rem, 2.3vw, 2.5rem);
+            color: #1b1b1f;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #4f5673;
+            margin-bottom: 32px;
+            line-height: 1.75;
+            max-width: 42rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .highlight {
+            color: #4f6dff;
+            font-weight: 700;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        button {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 999px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+            min-height: 54px;
+        }
+
+        .btn-home {
+            background: linear-gradient(135deg, #5b7bff, #2f48c4);
+            color: white;
+            box-shadow: 0 16px 28px rgba(79, 104, 255, 0.22);
+        }
+
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 30px rgba(79, 104, 255, 0.28);
+            background: linear-gradient(135deg, #4c6fff, #253db8);
+        }
+
+        .btn-back {
+            background: #f4f5fb;
+            color: #3a4560;
+            box-shadow: 0 12px 24px rgba(30, 44, 80, 0.06);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 28px rgba(30, 44, 80, 0.12);
+            background: #e7e9f8;
+        }
+
+        .features {
+            display: grid;
+            gap: 14px;
+            text-align: left;
+            padding-top: 20px;
+            border-top: 1px solid rgba(74, 84, 130, 0.12);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.99rem;
+            color: #3d4460;
+        }
+
+        .feature-item:before {
+            content: "\2713";
+            color: #4f6dff;
+            font-weight: 900;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 520px) {
+            body {
+                padding: 16px;
+            }
+
+            .welcome-container {
+                padding: 32px 24px;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-glow"></div>
+    <div class="welcome-container">
+        <div class="welcome-emoji">📚</div>
+        <h1>Welcome to E-Book Library!</h1>
+        <p>You've successfully become a member! The <span class="highlight">celebration</span> was just the beginning. Now get ready to explore <span class="highlight">thousands of amazing books</span>.</p>
+
+        <div class="button-group">
+            <button class="btn-home" onclick="goHome()">📖 Read instruction</button>
+            <button class="btn-back" onclick="goBack()">⬅ Go Back</button>
+        </div>
+
+        <div class="features">
+            <div class="feature-item">Access unlimited books anytime</div>
+            <div class="feature-item">View books for offline reading</div>
+            <div class="feature-item">Create your personal reading list</div>
+            <div class="feature-item">Join our reading community</div>
+        </div>
+    </div>
+
+    <script>
+        function goHome() {
+            window.location.href = 'Help.html';
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+</body>
+</html>

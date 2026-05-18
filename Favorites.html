@@ -1,0 +1,164 @@
+tes<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorite Books - E-Book Library</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Logo.jpg" type="image/jpg">
+</head>
+<body style="background: url('Background-img.jpg') center/cover no-repeat fixed; margin: 0;">
+    <script>
+        // Check if user is logged in, else redirect to index.html
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <div class="points-header">
+        ⭐ Points: <span class="points-value" id="pointsDisplay">0</span>
+    </div>
+
+    <header style="position: relative;">
+        <div class="Liberary-container">
+            <h1 style="font-size: 50px; text-align:center; margin: 0;">❤️ My Favorite Books ❤️</h1>
+        </div>
+        <hr><hr><br>
+    </header>
+
+    <div class="favorites-container">
+        <div class="favorites-header">
+            <h2>Your Personal Book Collection</h2>
+            <p>Books you love and want to read later</p>
+            <div class="favorites-count">
+                <span id="favoriteCount">0</span> favorite book(s)
+            </div>
+        </div>
+
+        <div id="favoritesContent">
+            <div class="favorites-empty">
+                <div class="favorites-empty-icon">📚</div>
+                <h2>No Favorite Books Yet</h2>
+                <p>Start adding your favorite books by clicking the star icon on any book!</p>
+                <p style="margin-top: 20px;">
+                    <a href="main.html" style="color: #667eea; font-weight: bold;">← Browse All Books</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-item" data-page="home">
+            <img href="https://nitin2011-coder.github.io/E-Book-Library/" style="width: 50px;height: 50px;border-radius: 100%;background-color: #ccc;" src="Logo.jpg">
+        </div>
+        <div class="nav-item" data-page="home">
+            <span class="label"><a href="main.html" class="Search" style="font-size:23px;"> Home </a></span>
+        </div>
+        <div class="nav-item nav-favorites active" data-page="favorites">
+            <span class="label"><a href="Favorites.html" class="Search" style="font-size:23px;"> Favorites </a></span>
+        </div>
+        <div class="nav-item" data-page="charts">
+            <span class="label"><a href="Donate.html" class="Search" style="font-size:23px;"> Donate </a></span>
+        </div>
+        <div class="nav-item" data-page="party">
+            <span class="label"><a href="Help.html" class="Search" style="font-size:23px;"> Help </a></span>
+        </div>
+        <div class="faqitem">
+            <button class="faqquestion" style="background-color: #882dacb7;">
+                <div class="navitem" data-page="profile">
+                    <img class="Profile-img" src="">
+                </div>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="faqanswer" style="width: 100px;">
+                <br><a href="more.html" class="Search"><button id="signInBtnHeader" class="sign-in-btn" onclick="scrollToAuth()">🔐 Profile</button></a><br><br>
+                <button class="sign-in-btn" onclick="triggerFunnySignIn()">✨ Options</button><br>
+            </div>
+        </div>
+    </nav>
+
+    <script src="script.js"></script>
+    <script>
+        // Load and display favorites on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadFavoritesPage();
+            updatePointsDisplay();
+        });
+
+        function loadFavoritesPage() {
+            const currentUser = localStorage.getItem('currentUser');
+            const favorites = getFavorites(currentUser);
+            const content = document.getElementById('favoritesContent');
+            
+            if (favorites.length === 0) {
+                content.innerHTML = `
+                    <div class="favorites-empty">
+                        <div class="favorites-empty-icon">📚</div>
+                        <h2>No Favorite Books Yet</h2>
+                        <p>Start adding your favorite books by clicking the star icon on any book!</p>
+                        <p style="margin-top: 20px;">
+                            <a href="main.html" style="color: #667eea; font-weight: bold;">← Browse All Books</a>
+                        </p>
+                    </div>
+                `;
+                document.getElementById('favoriteCount').textContent = '0';
+            } else {
+                let html = '<ol class="book-list" id="favorites-list">';
+                
+                // Sample books data (in real app, this would be fetched from a database)
+                const allBooks = {
+                    'Constitution Of India': { by: 'Government Of India', src: 'constitution.jpg', url: 'ConstitutionOfIndia.pdf' },
+                    'The God Of Small Things': { by: 'Arundhiti Roy', src: 'TheGodOfSmallThings.jpg', url: 'The_God_of_Small_Things.pdf' },
+                    'The White Tiger': { by: 'Arvind Adiga', src: 'TheWhiteTiger.jpg', url: 'The_White_Tiger.pdf' },
+                    'Midnights Children': { by: 'Salman Rushdil', src: 'MidnightsChildren.jpg', url: "Midnight's_Children.pdf4" },
+                    'The Jungle Book': { by: 'Rudyard Kiplin', src: 'Jungle-Book.jpg', url: 'TheJungleBook.pdf' },
+                    'A Tale of Two Cities': { by: 'Charles Dickens', src: 'ATaleofTwoCities.jpg', url: 'https://www.gutenberg.org/ebooks/98' },
+                    'Pride and Prejudice': { by: 'Jane Austen', src: 'PrideandPrejudice.jpg', url: 'https://www.gutenberg.org/files/1342/1342-h/1342-h.htm' },
+                    'The Alchemist': { by: 'Paulo Coelho', src: 'TheAlchemist.jpg', url: 'https://archive.org/read/the_alchemist_paulo_coelho' },
+                    'The Little Prince': { by: 'Antoine de Saint-Exupéry', src: 'TheLittlePrince.jpg', url: 'https://www.gutenberg.org/files/4015/4015-h/4015-h.htm' },
+                    'Malgudi Days': { by: 'R.K. Narayan', src: 'MalgudiDays.jpg', url: 'https://archive.org/read/malgudi_days_r_k_narayan' },
+                    'Three Men In A Boat': { by: 'Jerome K. Jerome', src: 'ThreeMenInABoat.jpg', url: 'https://www.gutenberg.org/files/308/308-h/308-h.htm' },
+                    'Devdas': { by: 'Sarat Chandra Chattopadhyay', src: 'devdas.jpg', url: 'https://standardebooks.org/ebooks/sarat-chandra-chattopadhyay/devdas' },
+                    'The Guide': { by: 'R.K. Narayan', src: 'theguide.jpg', url: 'https://books.google.co.in/books/about/The_Guide.html' },
+                    'A Suitable Boy': { by: 'Vikram Seth', src: 'suitableboy.jpg', url: 'https://books.google.co.in/books/about/A_Suitable_Boy.html' },
+                    'Such a Long Journey': { by: 'Rohinton Mistry', src: 'longjourney.jpg', url: 'https://books.google.co.in/books/about/Such_a_Long_Journey.html' },
+                    'The Inheritance of Loss': { by: 'Kiran Desai', src: 'inheritanceloss.jpg', url: 'https://books.google.co.in/books/about/The_Inheritance_of_Loss.html' },
+                    'The Glass Palace': { by: 'Amitav Ghosh', src: 'glasspalace.jpg', url: 'https://books.google.co.in/books/about/The_Glass_Palace.html' },
+                    'Five Point Someone': { by: 'Chetan Bhagat', src: 'fivepoint.jpg', url: 'https://books.google.co.in/books/about/Five_Point_Someone.html' },
+                    'Interpreter of Maladies': { by: 'Jhumpa Lahiri', src: 'interpreter.jpg', url: 'https://books.google.co.in/books/about/Interpreter_of_Maladies.html' },
+                    'Untamed': { by: 'Khushwant Singh', src: 'untamed.jpg', url: 'https://books.google.co.in/books/about/Untamed.html' },
+                    'Chandrakanta': { by: 'Devaki Nandan Khatri', src: 'chandrakanta.jpg', url: 'https://www.gutenberg.org/ebooks/search/?query=chandrakanta' },
+                    'Raag Darbari': { by: 'Raendra Mathur', src: 'raagdarbari.jpg', url: 'https://books.google.co.in/books/about/Raag_Darbari.html' },
+                    'The Sorrow of War': { by: 'Bao Ninh', src: 'sorrowwar.jpg', url: 'https://books.google.co.in/books/about/The_Sorrow_of_War.html' }
+                };
+
+                favorites.forEach(bookTitle => {
+                    const bookInfo = allBooks[bookTitle];
+                    if (bookInfo) {
+                        html += `
+                            <li class="book-item">
+                                <button class="favorite-btn active" onclick="toggleFavorite('${bookTitle}', event)">★</button>
+                                <h2><u>${bookTitle}</u></h2><br>
+                                <a href="${bookInfo.url}" target="_blank" class="Google-button"><img src="${bookInfo.src}"></a>
+                                <p> --- by ${bookInfo.by}</p>
+                            </li>
+                        `;
+                    }
+                });
+                
+                html += '</ol>';
+                content.innerHTML = html;
+                document.getElementById('favoriteCount').textContent = favorites.length;
+            }
+        }
+
+        function updatePointsDisplay() {
+            const currentUser = localStorage.getItem('currentUser');
+            const userPoints = getPoints(currentUser);
+            document.getElementById('pointsDisplay').textContent = userPoints;
+        }
+    </script>
+</body>
+</html>

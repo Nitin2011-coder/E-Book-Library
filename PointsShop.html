@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Points Shop - E-Book Library</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Logo.jpg" type="image/jpg">
+</head>
+<body style="background: url('Background-img.jpg') center/cover no-repeat fixed; margin: 0;">
+    <script>
+        // Check if user is logged in, else redirect to index.html
+        const currentUser = localStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+    <div class="points-header">
+        ⭐ Points: <span class="points-value" id="pointsDisplay">0</span>
+    </div>
+
+    <header style="position: relative;">
+        <div class="Liberary-container">
+            <h1 style="font-size: 50px; text-align:center; margin: 0;">⭐ Points Shop ⭐</h1>
+        </div>
+        <hr><hr><br>
+    </header>
+
+    <div class="points-shop-container">
+        <div class="shop-header">
+            <h2>Spend Your Points!</h2>
+            <p>Redeem your points for exclusive rewards</p>
+            <p style="font-size: 24px; margin-top: 10px;">Your Balance: <strong id="balanceDisplay">0</strong> Points</p>
+        </div>
+
+        <div class="shop-items" id="shopItems">
+            <!-- Shop items will be loaded here by JavaScript -->
+        </div>
+
+        <div class="purchase-history" id="purchaseHistory" style="margin-top: 40px; color: #fff; text-align: left;"></div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="main.html" style="color: #667eea; font-weight: bold; font-size: 16px;">← Back to Library</a>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="top-nav">
+        <div class="nav-item" data-page="home">
+            <img href="https://nitin2011-coder.github.io/E-Book-Library/" style="width: 50px;height: 50px;border-radius: 100%;background-color: #ccc;" src="Logo.jpg">
+        </div>
+        <div class="nav-item" data-page="home">
+            <span class="label"><a href="main.html" class="Search" style="font-size:23px;"> Home </a></span>
+        </div>
+        <div class="nav-item nav-favorites" data-page="favorites">
+            <span class="label"><a href="Favorites.html" class="Search" style="font-size:23px;"> Favorites </a></span>
+        </div>
+        <div class="nav-item" data-page="charts">
+            <span class="label"><a href="Donate.html" class="Search" style="font-size:23px;"> Donate </a></span>
+        </div>
+        <div class="nav-item" data-page="party">
+            <span class="label"><a href="Help.html" class="Search" style="font-size:23px;"> Help </a></span>
+        </div>
+        <div class="faqitem">
+            <button class="faqquestion" style="background-color: #882dacb7;">
+                <div class="navitem" data-page="profile">
+                    <img class="Profile-img" src="">
+                </div>
+                <span class="arrow">&#9660;</span>
+            </button>
+            <div class="faqanswer" style="width: 100px;">
+                <br><a href="more.html" class="Search"><button id="signInBtnHeader" class="sign-in-btn" onclick="scrollToAuth()">🔐 Profile</button></a><br><br>
+                <button class="sign-in-btn" onclick="triggerFunnySignIn()">✨ Options</button><br>
+            </div>
+        </div>
+    </nav>
+
+    <script src="script.js"></script>
+    <script>
+        // Shop items configuration
+        const shopItems = [
+            {
+                id: 1,
+                name: 'Premium Reading Theme',
+                icon: '🎨',
+                points: 50,
+                description: 'Unlock dark mode for comfortable reading'
+            },
+            {
+                id: 2,
+                name: 'Ad-Free Reading',
+                icon: '🚫',
+                points: 100,
+                description: 'Ad-free experience for 7 days'
+            },
+            {
+                id: 3,
+                name: 'Exclusive E-Books Access',
+                icon: '📚',
+                points: 150,
+                description: 'Access to premium e-book collection'
+            },
+            {
+                id: 4,
+                name: 'Book Review Badge',
+                icon: '🏆',
+                points: 30,
+                description: 'Get a special reviewer badge on your profile'
+            },
+            {
+                id: 5,
+                name: 'Reading Challenge Boost',
+                icon: '🚀',
+                points: 75,
+                description: 'Double points for next 30 days of reading'
+            },
+            {
+                id: 6,
+                name: 'Author Biography Pack',
+                icon: '👤',
+                points: 40,
+                description: 'Access author biographies and interviews'
+            },
+            {
+                id: 7,
+                name: 'Offline Reading Mode',
+                icon: '📱',
+                points: 80,
+                description: 'Download books for offline reading'
+            },
+            {
+                id: 8,
+                name: 'Monthly Magazine Access',
+                icon: '📖',
+                points: 120,
+                description: 'Exclusive literary magazines (30 days)'
+            }
+        ];
+
+        function getPurchasedItems(userId) {
+            const purchases = localStorage.getItem(`purchases_${userId}`);
+            return purchases ? JSON.parse(purchases) : [];
+        }
+
+        function hasPurchasedItem(userId, itemId) {
+            return getPurchasedItems(userId).some(entry => entry.itemId === itemId);
+        }
+
+        function renderPurchaseHistory(userId) {
+            const historyContainer = document.getElementById('purchaseHistory');
+            const purchases = getPurchasedItems(userId);
+
+            if (!historyContainer) return;
+            if (!purchases.length) {
+                historyContainer.innerHTML = '<p class="history-empty">No purchases yet. Spend points to unlock rewards!</p>';
+                return;
+            }
+
+            historyContainer.innerHTML = `
+                <h3>Your Purchase History</h3>
+                <ul class="purchase-history-list">
+                    ${purchases.map(entry => `
+                        <li>
+                            <strong>${entry.itemName}</strong> &ndash; ${entry.cost} points
+                            <span class="history-date">(${entry.date})</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            `;
+        }
+
+        function loadShop() {
+            const currentUser = localStorage.getItem('currentUser');
+            const userPoints = getPoints(currentUser);
+            document.getElementById('balanceDisplay').textContent = userPoints;
+            document.getElementById('pointsDisplay').textContent = userPoints;
+
+            const shopContainer = document.getElementById('shopItems');
+            let html = '';
+
+            shopItems.forEach(item => {
+                const purchased = hasPurchasedItem(currentUser, item.id);
+                const canAfford = userPoints >= item.points && !purchased;
+                const buttonLabel = purchased ? 'Purchased' : canAfford ? 'Purchase' : 'Insufficient Points';
+                const buttonDisabled = purchased || !canAfford;
+                const itemStateText = purchased ? 'Already unlocked' : `Cost: ${item.points} Points`;
+
+                html += `
+                    <div class="shop-item">
+                        <div class="shop-item-icon">${item.icon}</div>
+                        <div class="shop-item-name">${item.name}</div>
+                        <p style="font-size: 14px; color: #666; margin: 8px 0;">${item.description}</p>
+                        <div class="shop-item-points">
+                            <span style="font-size: 14px;">${itemStateText}</span>
+                        </div>
+                        <button class="shop-btn ${buttonDisabled ? 'disabled' : ''}" 
+                                onclick="purchaseItem(${item.id}, ${item.points}, '${item.name}')"
+                                ${buttonDisabled ? 'disabled' : ''}>
+                            ${buttonLabel}
+                        </button>
+                    </div>
+                `;
+            });
+
+            shopContainer.innerHTML = html;
+            renderPurchaseHistory(currentUser);
+        }
+
+        function purchaseItem(itemId, cost, itemName) {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) return;
+
+            if (hasPurchasedItem(currentUser, itemId)) {
+                showPointsToast(`You already own "${itemName}".`, 'info');
+                return;
+            }
+
+            if (spendPoints(currentUser, cost)) {
+                showPointsToast(`Purchased "${itemName}"! 🎉`, 'success');
+                const purchases = getPurchasedItems(currentUser);
+                purchases.push({
+                    itemId: itemId,
+                    itemName: itemName,
+                    cost: cost,
+                    date: new Date().toLocaleDateString()
+                });
+                localStorage.setItem(`purchases_${currentUser}`, JSON.stringify(purchases));
+                loadShop();
+            } else {
+                showPointsToast('You do not have enough points!', 'error');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadShop();
+        });
+    </script>
+</body>
+</html>
